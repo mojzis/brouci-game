@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shake Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #shakeMagnitude {
+            font-size: 2rem;
+            margin-top: 20px;
+        }
+
+        #requestPermissionButton {
+            display: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Shake Test</h1>
+    <p>Shake your device to see the calculated shake magnitude.</p>
+    <div id="shakeMagnitude">0</div>
+    <button id="requestPermissionButton">Request Motion Permission</button>
+
+    <script>
+        let lastShakeTime = 0;
+        const shakeThreshold = 15; // Adjust this value as needed
+
+        function handleDeviceMotion(event) {
+            const acceleration = event.accelerationIncludingGravity;
+            const currentTime = new Date().getTime();
+
+            if (currentTime - lastShakeTime > 1000) { // 1 second cooldown between shakes
+                const shakeMagnitude = Math.sqrt(acceleration.x * acceleration.x + acceleration.y * acceleration.y + acceleration.z * acceleration.z);
+
+                if (shakeMagnitude > shakeThreshold) {
+                    lastShakeTime = currentTime;
+                    document.getElementById('shakeMagnitude').innerText = shakeMagnitude.toFixed(2);
+                }
+            }
+        }
+
+        function requestMotionPermission() {
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission()
+                    .then(permissionState => {
+                        if (permissionState === 'granted') {
+                            window.addEventListener('devicemotion', handleDeviceMotion);
+                        }
+                    })
+                    .catch(console.error);
+            } else {
+                // Handle regular non-iOS 13+ devices
+                window.addEventListener('devicemotion', handleDeviceMotion);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const requestPermissionButton = document.getElementById('requestPermissionButton');
+
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                requestPermissionButton.style.display = 'block';
+                requestPermissionButton.addEventListener('click', function () {
+                    requestMotionPermission();
+                    requestPermissionButton.style.display = 'none';
+                });
+            } else {
+                requestMotionPermission();
+            }
+        });
+    </script>
+</body>
+
+</html>

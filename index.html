@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <title>Catch the Beetle!</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:title" content="Video" />
+    <meta property="og:description" content="" />
+    <meta name="Description" CONTENT="">
+    <style type="text/css">
+        /* Reset */
+        html,
+        body,
+        div,
+        span,
+        applet,
+        object,
+        iframe,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        a,
+        abbr,
+        acronym,
+        address,
+        big,
+        cite,
+        code,
+        del,
+        dfn,
+        em,
+        img,
+        ins,
+        kbd,
+        q,
+        s,
+        samp,
+        small,
+        strike,
+        strong,
+        sub,
+        sup,
+        tt,
+        var,
+        b,
+        u,
+        i,
+        center,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        fieldset,
+        form,
+        label,
+        legend,
+        table,
+        caption,
+        tbody,
+        tfoot,
+        thead,
+        tr,
+        th,
+        td,
+        article,
+        aside,
+        canvas,
+        details,
+        embed,
+        figure,
+        figcaption,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        output,
+        ruby,
+        section,
+        summary,
+        time,
+        mark,
+        audio,
+        video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Variables */
+        :root {
+            --desktop-font-size: 1.3rem/1.5;
+            --mobile-font-size: 1.1rem/1.4;
+            --text-color: #2d2d2d;
+            --link-color: blue;
+            --primary-color: lightsteelblue;
+            --secondary-color: aliceblue;
+            --tertiary-color: whitesmoke;
+        }
+
+        /* Typography */
+        body {
+            color: var(--text-color);
+        }
+
+        body,
+        input {
+            font: var(--desktop-font-size) -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        dl,
+        img,
+        figure {
+            margin: 2rem 0;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: bold;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 200%;
+        }
+
+        h2 {
+            font-size: 150%;
+        }
+
+        h3 {
+            font-size: 120%;
+        }
+
+        h4,
+        h5,
+        h6 {
+            font-size: 100%;
+        }
+
+        h5,
+        h6 {
+            text-transform: uppercase;
+        }
+
+        header h1 {
+            border-bottom: 1px solid;
+        }
+
+        p {
+            margin: 2rem 0;
+        }
+
+        a,
+        a:visited {
+            color: var(--link-color);
+        }
+
+        strong,
+        time,
+        b {
+            font-weight: bold;
+        }
+
+        em,
+        dfn,
+        i {
+            font-style: italic;
+        }
+
+        sub {
+            font-size: 60%;
+            vertical-align: bottom;
+        }
+
+        small {
+            font-size: 80%;
+        }
+
+        blockquote,
+        q {
+            background: var(--secondary-color);
+            border-left: 10px solid var(--primary-color);
+            display: block;
+            font-family: "Georgia", serif;
+            padding: 1rem;
+        }
+
+        blockquote p:first-child {
+            margin-top: 0;
+        }
+
+        cite {
+            font-family: "Georgia", serif;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        kbd,
+        code,
+        samp,
+        pre,
+        var {
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        code,
+        pre {
+            background: var(--tertiary-color);
+            padding: 0.5rem 1rem;
+        }
+
+        code pre,
+        pre code {
+            padding: 0;
+        }
+
+        /* Elements */
+        hr {
+            background: var(--text-color);
+            border: 0;
+            height: 1px;
+            margin: 4rem 0;
+        }
+
+        img {
+            display: block;
+            height: auto;
+            max-width: 100%;
+        }
+
+        figure {
+            border: 1px solid var(--primary-color);
+            display: inline-block;
+            padding: 1rem;
+            width: auto;
+        }
+
+        figure img {
+            margin: 0;
+        }
+
+        figure figcaption {
+            font-size: 80%;
+            margin-top: 0.5rem;
+        }
+
+        ul,
+        ol {
+            margin: 2rem 0;
+            padding: 0 0 0 4rem;
+        }
+
+        dl dd {
+            padding-left: 2rem;
+        }
+
+        /* removed table, input */
+
+        /* Mobile Styling */
+        @media screen and (max-width: 50rem) {
+
+            body,
+            input {
+                font: var(--mobile-font-size) -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            }
+
+            table {
+                table-layout: auto;
+            }
+        }
+
+        /* custom stuff */
+        h1 {
+            text-align: center;
+        }
+
+        body {
+            padding: 1rem;
+        }
+
+        .zviratko {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+        }
+
+        #video {
+            width: 100%;
+            height: auto;
+            transform: scaleX(-1); /* Mirror the video */
+        }
+        
+        #poseCanvas {
+            transform: scaleX(-1); /* Mirror the pose canvas too */
+        }
+
+        #toggleCameraButton {
+            position: static;
+            /* top: 10px;
+            right: 10px; */
+            z-index: 10;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+
+        #requestMotionButton {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #animalList {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+    <!-- TensorFlow.js and Pose Detection -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection"></script>
+    
+    <script src="js/animals.js"></script>
+    <script src="js/camera-selector.js"></script>
+</head>
+
+<body>
+    <div id="gameInstructions" style="text-align: center; padding: 10px; background-color: rgba(255,255,255,0.9); margin-bottom: 10px; border-radius: 5px;">
+        <h2 style="margin: 0; font-size: 1.5rem;">Catch the Beetle!</h2>
+        <p style="margin: 5px 0; font-size: 1rem;">Use your hand to catch the beetle. Hold your hand over it for <span id="catchTimeDisplay">0.5</span> seconds!</p>
+        <p id="cameraError" style="margin: 5px 0; font-size: 0.9rem; color: red; display: none;">
+            Camera access requires HTTPS. Please run with: <code>python -m http.server 8000</code> and open <code>http://localhost:8000</code>
+        </p>
+    </div>
+    <div id="gameControls" style="position: fixed; bottom: 10px; left: 10px; background-color: rgba(255,255,255,0.9); padding: 10px; border-radius: 5px; z-index: 100;">
+        <div style="margin-bottom: 10px;">
+            <label for="speedSlider">Beetle Speed: <span id="speedValue">3.0</span></label><br>
+            <input type="range" id="speedSlider" min="0.5" max="6" step="0.5" value="3.0" style="width: 200px;">
+        </div>
+        <div>
+            <label for="catchTimeSlider">Catch Time: <span id="catchTimeValue">0.5</span>s</label><br>
+            <input type="range" id="catchTimeSlider" min="0.1" max="2.0" step="0.1" value="0.5" style="width: 200px;">
+        </div>
+    </div>
+    <div style="position: relative;">
+        <video id="video" playsinline autoplay muted></video>
+        <canvas id="poseCanvas" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
+        <img class="zviratko" id="big_brouk" src="img/big_brouk.png">
+        <img class="zviratko" id="brouk_medium" src="img/brouk_medium.png">
+        <img class="zviratko" id="small_brouk" src="img/small_brouk.png">
+        <!-- <img class="zviratko" id="blecha" src="img/blecha.png"> -->
+        <!-- <button id="toggleCameraButton">Toggle Camera</button>
+        <button id="requestMotionButton">Request Motion Permission</button> -->
+    </div>
+    <div id="animalList">
+        <a href="img/big_brouk.png" style="text-decoration: none;">
+            <img src="img/big_brouk.png" alt="Beetle" style="width: 50px; height: 50px;">
+        </a>
+        <a href="img/brouk_medium.png" style="text-decoration: none;">
+            <img src="img/brouk_medium.png" alt="Lachticek" style="width: 50px; height: 50px;">
+        </a>
+        <a href="img/small_brouk.png" style="text-decoration: none;">
+            <img src="img/small_brouk.png" alt="Kudlanka" style="width: 50px; height: 50px;">
+        </a>
+        <!-- <a href="img/blecha.png" style="text-decoration: none;">
+            <img src="img/blecha.png" alt="Blecha" style="width: 50px; height: 50px;">
+        </a> -->
+        <button id="toggleCameraButton"
+            style="padding: 10px; background-color: #fff; border: 1px solid #ccc; cursor: pointer;">Toggle
+            Camera</button>
+        <button id="togglePoseButton"
+            style="padding: 10px; background-color: #fff; border: 1px solid #ccc; cursor: pointer;">Show Poses</button>
+        <button id="requestMotionButton"
+            style="display: none; padding: 10px 20px; font-size: 1rem; cursor: pointer;">Request Motion
+            Permission</button>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const requestMotionButton = document.getElementById('requestMotionButton');
+
+            if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                requestMotionButton.style.display = 'block';
+                requestMotionButton.addEventListener('click', function () {
+                    DeviceMotionEvent.requestPermission()
+                        .then(permissionState => {
+                            if (permissionState === 'granted') {
+                                window.addEventListener('devicemotion', handleDeviceMotion);
+                                requestMotionButton.style.display = 'none';
+                            }
+                        })
+                        .catch(console.error);
+                });
+            } else {
+                // Non-iOS devices
+                window.addEventListener('devicemotion', handleDeviceMotion);
+            }
+
+            function handleDeviceMotion(event) {
+                console.log('Device motion detected:', event.accelerationIncludingGravity);
+            }
+        });
+    </script>
+</body>
+
+</html>
