@@ -311,22 +311,85 @@
 
         body {
             padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .zviratko {
             position: absolute;
             width: 50px;
             height: 50px;
+            z-index: 10;
         }
 
         #video {
             width: 100%;
-            height: auto;
+            height: 100%;
+            max-height: 85vh; /* Take up most of viewport height */
+            max-width: 95vw; /* Take up most of viewport width */
             transform: scaleX(-1); /* Mirror the video */
+            display: block;
+            margin: 0 auto;
+            object-fit: cover; /* Maintain aspect ratio */
         }
         
         #poseCanvas {
             transform: scaleX(-1); /* Mirror the pose canvas too */
+            width: 100%;
+            height: 100%;
+            max-height: 85vh;
+            max-width: 95vw;
+        }
+        
+        /* Container for video and canvas */
+        .video-container {
+            position: relative;
+            width: 95vw;
+            height: 85vh;
+            max-width: 1200px; /* Reasonable max on very large screens */
+            margin: 0 auto;
+            background-color: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Responsive adjustments */
+        @media screen and (max-width: 600px) {
+            .video-container {
+                width: 100vw;
+                height: 90vh;
+                border: none;
+                border-radius: 0;
+            }
+            
+            #video {
+                max-height: 90vh;
+                max-width: 100vw;
+            }
+            
+            #poseCanvas {
+                max-height: 90vh;
+                max-width: 100vw;
+            }
+            
+            #gameControls {
+                width: calc(100% - 20px) !important;
+                left: 10px !important;
+                right: 10px !important;
+                font-size: 0.9rem;
+            }
+            
+            #gameInstructions {
+                margin: 5px !important;
+                padding: 5px !important;
+                font-size: 0.9rem;
+            }
         }
 
         #toggleCameraButton {
@@ -367,51 +430,36 @@
 </head>
 
 <body>
-    <div id="gameInstructions" style="text-align: center; padding: 10px; background-color: rgba(255,255,255,0.9); margin-bottom: 10px; border-radius: 5px;">
-        <h2 style="margin: 0; font-size: 1.5rem;">Catch the Beetle!</h2>
-        <p style="margin: 5px 0; font-size: 1rem;">Use your hand to catch the beetle. Hold your hand over it for <span id="catchTimeDisplay">0.5</span> seconds!</p>
-        <p id="cameraError" style="margin: 5px 0; font-size: 0.9rem; color: red; display: none;">
+    <div id="gameInstructions" style="text-align: center; padding: 8px; background-color: rgba(255,255,255,0.9); margin-bottom: 5px; border-radius: 5px; max-width: 1200px; width: 95vw;">
+        <h2 style="margin: 0; font-size: 1.2rem;">Catch the Beetle!</h2>
+        <p style="margin: 3px 0; font-size: 0.9rem;">Use your hand to catch the beetle. Hold over it for <span id="catchTimeDisplay">0.5</span>s!</p>
+        <p id="cameraError" style="margin: 3px 0; font-size: 0.8rem; color: red; display: none;">
             Camera access requires HTTPS. Please run with: <code>python -m http.server 8000</code> and open <code>http://localhost:8000</code>
         </p>
     </div>
-    <div id="gameControls" style="position: fixed; bottom: 10px; left: 10px; background-color: rgba(255,255,255,0.9); padding: 10px; border-radius: 5px; z-index: 100;">
-        <div style="margin-bottom: 10px;">
-            <label for="speedSlider">Beetle Speed: <span id="speedValue">3.0</span></label><br>
-            <input type="range" id="speedSlider" min="0.5" max="6" step="0.5" value="3.0" style="width: 200px;">
+    <div id="gameControls" style="position: fixed; bottom: 10px; left: 10px; background-color: rgba(255,255,255,0.9); padding: 8px; border-radius: 5px; z-index: 100; font-size: 0.9rem;">
+        <div style="margin-bottom: 8px;">
+            <label for="speedSlider">Speed: <span id="speedValue">3.0</span></label><br>
+            <input type="range" id="speedSlider" min="0.5" max="6" step="0.5" value="3.0" style="width: 180px;">
         </div>
         <div>
-            <label for="catchTimeSlider">Catch Time: <span id="catchTimeValue">0.5</span>s</label><br>
-            <input type="range" id="catchTimeSlider" min="0.1" max="2.0" step="0.1" value="0.5" style="width: 200px;">
+            <label for="catchTimeSlider">Time: <span id="catchTimeValue">0.5</span>s</label><br>
+            <input type="range" id="catchTimeSlider" min="0.1" max="2.0" step="0.1" value="0.5" style="width: 180px;">
         </div>
     </div>
-    <div style="position: relative;">
+    <div class="video-container">
         <video id="video" playsinline autoplay muted></video>
         <canvas id="poseCanvas" style="position: absolute; top: 0; left: 0; pointer-events: none;"></canvas>
         <img class="zviratko" id="big_brouk" src="img/big_brouk.png">
         <img class="zviratko" id="brouk_medium" src="img/brouk_medium.png">
         <img class="zviratko" id="small_brouk" src="img/small_brouk.png">
-        <!-- <img class="zviratko" id="blecha" src="img/blecha.png"> -->
-        <!-- <button id="toggleCameraButton">Toggle Camera</button>
-        <button id="requestMotionButton">Request Motion Permission</button> -->
     </div>
-    <div id="animalList">
-        <a href="img/big_brouk.png" style="text-decoration: none;">
-            <img src="img/big_brouk.png" alt="Beetle" style="width: 50px; height: 50px;">
-        </a>
-        <a href="img/brouk_medium.png" style="text-decoration: none;">
-            <img src="img/brouk_medium.png" alt="Lachticek" style="width: 50px; height: 50px;">
-        </a>
-        <a href="img/small_brouk.png" style="text-decoration: none;">
-            <img src="img/small_brouk.png" alt="Kudlanka" style="width: 50px; height: 50px;">
-        </a>
-        <!-- <a href="img/blecha.png" style="text-decoration: none;">
-            <img src="img/blecha.png" alt="Blecha" style="width: 50px; height: 50px;">
-        </a> -->
+    <div id="animalList" style="margin-top: 10px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
         <button id="toggleCameraButton"
-            style="padding: 10px; background-color: #fff; border: 1px solid #ccc; cursor: pointer;">Toggle
+            style="padding: 10px; background-color: #fff; border: 1px solid #ccc; cursor: pointer; border-radius: 5px;">Toggle
             Camera</button>
         <button id="togglePoseButton"
-            style="padding: 10px; background-color: #fff; border: 1px solid #ccc; cursor: pointer;">Show Poses</button>
+            style="padding: 10px; background-color: #fff; border: 1px solid #ccc; cursor: pointer; border-radius: 5px;">Show Poses</button>
         <button id="requestMotionButton"
             style="display: none; padding: 10px 20px; font-size: 1rem; cursor: pointer;">Request Motion
             Permission</button>

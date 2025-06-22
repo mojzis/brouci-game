@@ -283,13 +283,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     
+    // Get video container for proper positioning
+    const videoContainer = document.querySelector('.video-container');
+    
     // Initialize with single beetle for game
     animals = [
         {
             id: 'big_brouk',
             element: null,
-            x: video.offsetLeft + video.offsetWidth / 2,
-            y: video.offsetTop + video.offsetHeight / 2,
+            x: videoContainer.offsetLeft + videoContainer.offsetWidth / 2,
+            y: videoContainer.offsetTop + videoContainer.offsetHeight / 2,
             direction: Math.random() * 2 * Math.PI,
             size: 30, // Smaller size (was 55)
             growing: true,
@@ -1060,22 +1063,28 @@ function showCatchFeedback(points) {
 function updateScoreDisplay() {
     let scoreElement = document.getElementById('scoreDisplay');
     if (!scoreElement) {
-        // Create score display if it doesn't exist
+        // Create score display if it doesn't exist - positioned relative to video container
         scoreElement = document.createElement('div');
         scoreElement.id = 'scoreDisplay';
-        scoreElement.style.position = 'fixed';
+        scoreElement.style.position = 'absolute';
         scoreElement.style.top = '10px';
-        scoreElement.style.left = '10px';
-        scoreElement.style.fontSize = '1.5rem';
+        scoreElement.style.right = '10px'; // Move to top-right so it doesn't interfere with controls
+        scoreElement.style.fontSize = '1.2rem';
         scoreElement.style.fontWeight = 'bold';
         scoreElement.style.color = '#333';
         scoreElement.style.textShadow = '1px 1px 2px rgba(255,255,255,0.8)';
-        scoreElement.style.zIndex = '100';
-        scoreElement.style.backgroundColor = 'rgba(255,255,255,0.8)';
-        scoreElement.style.padding = '5px 10px';
-        scoreElement.style.borderRadius = '5px';
-        document.body.appendChild(scoreElement);
+        scoreElement.style.zIndex = '200';
+        scoreElement.style.backgroundColor = 'rgba(255,255,255,0.9)';
+        scoreElement.style.padding = '8px 12px';
+        scoreElement.style.borderRadius = '8px';
+        scoreElement.style.border = '2px solid #4CAF50';
+        scoreElement.style.minWidth = '120px';
+        scoreElement.style.textAlign = 'center';
+        
+        // Add it to the video container instead of body
+        const videoContainer = document.querySelector('.video-container');
+        videoContainer.appendChild(scoreElement);
     }
-    scoreElement.innerHTML = `Score: ${score}<br><span style="font-size: 0.8rem;">Faster catch = More points!</span>`;
+    scoreElement.innerHTML = `<div style="font-size: 1.3rem; color: #4CAF50;">Score: ${score}</div><div style="font-size: 0.7rem; color: #666; margin-top: 2px;">Faster = More Points!</div>`;
 }
 });
